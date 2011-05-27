@@ -2,12 +2,18 @@ require 'xmlsimple'
 module Dineromail
   class Notification
     
-    attr_accessor :transaction_id, :tipo
+    attr_reader :transaction_id, :tipo
     
-    def initialize(attributes = {})
-      attributes.each do |name, value|
-        send("#{name}=", value)
+    def initialize(transaction_id, tipo = null)
+      @transaction_id = transaction_id
+      @tipo = tipo
+    end
+    
+    def status_report
+      unless @status_report
+        @status_report = StatusReport.new(transaction_id)
       end
+      @status_report
     end
     
     def self.from_xml(notification_xml)
@@ -17,7 +23,7 @@ module Dineromail
       operations.each do |operation|
         tipo = operation['TIPO'].first
         transaction_id = operation['ID'].first
-        notifications << self.new(:transaction_id => transaction_id, :tipo=> tipo)
+        notifications << self.new(transaction_id, tipo)
       end
       notifications
     end
