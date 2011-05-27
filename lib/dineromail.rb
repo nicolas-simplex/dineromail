@@ -1,0 +1,3 @@
+module Dineromail
+  # Your code goes here...
+end
