@@ -1,6 +1,6 @@
 module Dineromail
   class Configuration
-    attr_accessor :ipn_url, :account_number, :password
+    attr_accessor :ipn_url, :account_number, :password, :logo_url, :return_url, :fail_url
   end
 
   class << self
