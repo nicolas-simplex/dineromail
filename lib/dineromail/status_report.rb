@@ -18,7 +18,7 @@ module Dineromail
       self.transaction_id = transaction_id
       account_number = Dineromail.configuration.account_number
       password = Dineromail.configuration.password
-      ipn_url = Dineromail.configuration.ipn_url
+      ipn_url = Dineromail.configuration.ipn_webservice_url
       request_data = "<REPORTE>
             <NROCTA>#{account_number}</NROCTA>
             <DETALLE>
