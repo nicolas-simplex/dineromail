@@ -1,4 +1,5 @@
 require 'xmlsimple'
+require 'httparty'
 require 'dineromail/buyer'
 module Dineromail
   class StatusReport
@@ -29,7 +30,7 @@ module Dineromail
                 <ID>#{transaction_id}</ID>
               </OPERACIONES>
             </CONSULTA>
-            <DETALLE>
+            </DETALLE>
           </REPORTE>"
       response = HTTParty.get ipn_url , :query => {:data => request_data}
       parse_response response.body

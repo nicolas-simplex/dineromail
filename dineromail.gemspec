@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ["nicolas@soluciones-simplex.com.ar", "shadi@soluciones-simplex.com.ar", "juanpablo@soluciones-simplex.com.ar"]
   s.homepage    = ""
   s.summary     = %q{Dineromail library for Rails}
-  s.description = %q{Integration with dineromail plataform for rails proyects}
+  s.description = %q{Integration with dineromail plataform for rails projects}
   
   s.add_dependency "xml-simple"
   s.add_dependency "httparty"
