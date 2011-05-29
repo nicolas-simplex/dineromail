@@ -18,11 +18,11 @@ module Dineromail
     
     def self.from_xml(notification_xml)
       notifications = []
-      notificaction_data = XmlSimple.xml_in(notification_xml)
-      operations = notificaction_data['operaciones'].first['operacion']
+      notificaction_data = XmlSimple.xml_in(notification_xml,'KeyToSymbol' => true)
+      operations = notificaction_data[:operaciones].first[:operacion]
       operations.each do |operation|
-        tipo = operation['tipo'].first
-        transaction_id = operation['id'].first
+        tipo = operation[:tipo].first
+        transaction_id = operation[:id].first
         notifications << self.new(transaction_id, tipo)
       end
       notifications

@@ -37,24 +37,24 @@ module Dineromail
     end
    
     def parse_response(response)
-      response_data = XmlSimple.xml_in(response)
-      operation = response_data['DETALLE'].first['OPERACIONES'].first['OPERACION'].first
-      self.transaction_id = operation['ID'].first
-      self.date = operation['FECHA'].first
-      self.status = operation['ESTADO'].first.to_i
-      self.amount = operation['MONTO'].first.to_f
-      self.net_amount = operation['MONTONETO'].first.to_f
-      self.pay_method = operation['METODOPAGO'].first
-      self.pay_medium = operation['MEDIOPAGO'].first
-      buyer_data = operation['COMPRADOR'].first
+      response_data = XmlSimple.xml_in(response,'KeyToSymbol' => true )
+      operation = response_data[:detalle].first[:operaciones].first[:operacion].first
+      self.transaction_id = operation[:id].first
+      self.date = operation[:fecha].first
+      self.status = operation[:estado].first.to_i
+      self.amount = operation[:monto].first.to_f
+      self.net_amount = operation[:montoneto].first.to_f
+      self.pay_method = operation[:metodopago].first
+      self.pay_medium = operation[:mediopago].first
+      buyer_data = operation[:comprador].first
       self.buyer = Buyer.new
-      buyer.email = buyer_data['EMAIL'].first
-      buyer.address = buyer_data['DIRECCION'].first
-      buyer.comment = buyer_data['COMENTARIO'].first
-      buyer.name = buyer_data['NOMBRE'].first
-      buyer.phone = buyer_data['TELEFONO'].first
-      buyer.document_type = buyer_data['TIPODOC'].first
-      buyer.document_number = buyer_data['NUMERODOC'].first
+      buyer.email = buyer_data[:email].first
+      buyer.address = buyer_data[:direccion].first
+      buyer.comment = buyer_data[:comentario].first
+      buyer.name = buyer_data[:nombre].first
+      buyer.phone = buyer_data[:telefono].first
+      buyer.document_type = buyer_data[:tipodoc].first
+      buyer.document_number = buyer_data[:numerodoc].first
     end
     
   end
