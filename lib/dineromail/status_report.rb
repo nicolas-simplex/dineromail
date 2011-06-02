@@ -3,13 +3,15 @@ require 'httparty'
 require 'dineromail/buyer'
 module Dineromail
   class StatusReport
-    attr_accessor :transaction_id, :date, :status, :amount, :net_amount, :pay_method, :pay_medium, :buyer
+    attr_accessor :transaction_id, :date, :status, :amount, :net_amount, :pay_method, :pay_medium, :buyer, :items
     
     PENDING_STATUS = 1
     ACCREDITED_STATUS = 2
     CANCELLED_STATUS = 3
     
+    
     def initialize(transaction_id = nil)
+      @items = []
       if transaction_id
         obtain_status_report_data_for transaction_id
       end
@@ -39,8 +41,8 @@ module Dineromail
     def parse_response(response)
       response_data = XmlSimple.xml_in(response,'KeyToSymbol' => true )
       operation = response_data[:detalle].first[:operaciones].first[:operacion].first
-      self.transaction_id = operation[:id].first
-      self.date = operation[:fecha].first
+      self.transaction_id = operation[:id].first.to_i
+      self.date = DateTime.parse operation[:fecha].first
       self.status = operation[:estado].first.to_i
       self.amount = operation[:monto].first.to_f
       self.net_amount = operation[:montoneto].first.to_f
@@ -55,6 +57,15 @@ module Dineromail
       buyer.phone = buyer_data[:telefono].first
       buyer.document_type = buyer_data[:tipodoc].first
       buyer.document_number = buyer_data[:numerodoc].first
+      items_data = operation[:items].first[:item]
+      items_data.each do |item_data|
+          item = Item.new
+          item.description = item_data[:descripcion].first
+          item.currency = item_data[:moneda].first.to_i
+          item.unit_price = item_data[:preciounitario].first.to_f
+          item.count = item_data[:cantidad].first.to_i
+          self.items << item
+      end
     end
     
   end

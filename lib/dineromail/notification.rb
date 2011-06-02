@@ -4,7 +4,7 @@ module Dineromail
     
     attr_reader :transaction_id, :tipo
     
-    def initialize(transaction_id, tipo = null)
+    def initialize(transaction_id, tipo = nil)
       @transaction_id = transaction_id
       @tipo = tipo
     end
@@ -26,6 +26,10 @@ module Dineromail
         notifications << self.new(transaction_id, tipo)
       end
       notifications
+    end
+    
+    def self.method_missing(symbol, *args)
+      status_report.send(symbol, *args)
     end
     
   end
