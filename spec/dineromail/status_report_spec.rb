@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Dineromail::StatusReport do
   it 'should load the status report from xml' do
-    xml = '<REPORTE><ESTADOREPORTE></ESTADOREPORTE><DETALLE><OPERACIONES><OPERACION>
+    xml = '<REPORTE><ESTADOREPORTE>1</ESTADOREPORTE><DETALLE><OPERACIONES><OPERACION>
           <ID>1889</ID>
           <FECHA>01/28/2011 12:02:01 PM</FECHA>
           <ESTADO>1</ESTADO>
@@ -35,6 +35,8 @@ describe Dineromail::StatusReport do
     buyer = status_report.buyer
     item = status_report.items.first
     
+    status_report.report_status.should == 1
+    status_report.valid_report?.should be_true
     status_report.transaction_id.should == 1889
     status_report.date.should == DateTime.ordinal(2011,28,12,2,1)
     status_report.status.should == Dineromail::StatusReport::PENDING_STATUS
