@@ -2,48 +2,22 @@ require 'spec_helper'
 
 describe Dineromail::StatusReport do
   it 'should load the status report from xml' do
-    xml = '<REPORTE><ESTADOREPORTE>1</ESTADOREPORTE><DETALLE><OPERACIONES><OPERACION>
-          <ID>1889</ID>
-          <FECHA>01/28/2011 12:02:01 PM</FECHA>
-          <ESTADO>1</ESTADO>
-          <NUMTRANSACCION>67777</NUMTRANSACCION>
-          <COMPRADOR>
-            <EMAIL>comprador@email.com</EMAIL>
-            <DIRECCION>San Martin 10</DIRECCION>
-            <COMENTARIO>comentario</COMENTARIO>
-            <NOMBRE>Juan</NOMBRE>
-            <TELEFONO>4444444</TELEFONO>
-            <TIPODOC>DNI</TIPODOC>
-            <NUMERODOC>222222222</NUMERODOC>
-          </COMPRADOR>
-          <MONTO>60.2</MONTO>
-          <MONTONETO>50.3</MONTONETO>
-          <METODOPAGO>TARJETA DE CREDITO</METODOPAGO>
-          <MEDIOPAGO>VISA</MEDIOPAGO>
-          <CUOTAS>1</CUOTAS>
-          <ITEMS>
-            <ITEM>
-              <DESCRIPCION>Libro</DESCRIPCION>
-              <MONEDA>1</MONEDA>
-              <PRECIOUNITARIO>6.90</PRECIOUNITARIO>
-              <CANTIDAD>2</CANTIDAD>
-            </ITEM>
-          </ITEMS><VENDEDOR><TIPODOC></TIPODOC><NUMERODOC></NUMERODOC></VENDEDOR></OPERACION></OPERACIONES></DETALLE></REPORTE>'
+    xml = File.read( 'spec/fixtures/status_report.xml')
     
-    status_report = Dineromail::StatusReport.new    
-    status_report.parse_response(xml)
-    buyer = status_report.buyer
-    item = status_report.items.first
+    status_report = Dineromail::StatusReport.parse(xml)
+    operation = status_report.operations.first
+    buyer = operation.buyer
+    item = operation.items.first
     
     status_report.report_status.should == 1
     status_report.valid_report?.should be_true
-    status_report.transaction_id.should == 1889
-    status_report.date.should == DateTime.ordinal(2011,28,12,2,1)
-    status_report.status.should == Dineromail::StatusReport::PENDING_STATUS
-    status_report.amount.should == 60.2
-    status_report.net_amount.should == 50.3
-    status_report.pay_method.should == 'TARJETA DE CREDITO'
-    status_report.pay_medium.should == 'VISA'
+    operation.transaction_id.should == 1889
+    operation.date.should == DateTime.ordinal(2011,28,12,2,1)
+    operation.status.should == Dineromail::Operation::PENDING_STATUS
+    operation.amount.should == 60.2
+    operation.net_amount.should == 50.3
+    operation.pay_method.should == 'TARJETA DE CREDITO'
+    operation.pay_medium.should == 'VISA'
     buyer.email.should == 'comprador@email.com'
     buyer.address.should == 'San Martin 10'
     buyer.comment.should == 'comentario'

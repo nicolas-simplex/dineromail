@@ -1,35 +1,27 @@
-require 'xmlsimple'
+require 'happymapper'
 module Dineromail
   class Notification
+    include HappyMapper
     
-    attr_reader :transaction_id, :tipo
-    
-    def initialize(transaction_id, tipo = nil)
-      @transaction_id = transaction_id
-      @tipo = tipo
-    end
+    tag 'OPERACION'
+    element :transaction_id, Integer, :tag => 'ID'
+    element :type, String, :tag => 'TIPO'
     
     def status_report
       unless @status_report
-        @status_report = StatusReport.new(transaction_id)
+        @status_report = StatusReport.get_report_for(transaction_id)
       end
       @status_report
     end
     
-    def self.from_xml(notification_xml)
-      notifications = []
-      notificaction_data = XmlSimple.xml_in(notification_xml,'KeyToSymbol' => true)
-      operations = notificaction_data[:operaciones].first[:operacion]
-      operations.each do |operation|
-        tipo = operation[:tipo].first
-        transaction_id = operation[:id].first
-        notifications << self.new(transaction_id, tipo)
-      end
-      notifications
+    def valid_report?
+      status_report.valid_report?
     end
     
-    def self.method_missing(symbol, *args)
-      status_report.send(symbol, *args)
+    def method_missing(symbol, *args)
+      unless status_report.operations.empty?
+        status_report.operations.first.send(symbol, *args)
+      end
     end
     
   end

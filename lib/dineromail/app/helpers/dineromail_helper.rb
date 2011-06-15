@@ -1,14 +1,16 @@
 module DineromailHelper
  
-  def dineromail_form(item_name,amount,options = {})
+  def dineromail_button(item_name,amount,options = {})
     options = options.symbolize_keys
     button_image_url = options.delete(:button_image_url) || Dineromail.configuration.button_image_url
     payment_url = options.delete(:payment_url) || Dineromail.configuration.payment_url
     form_options = options.delete(:form) || {}
     form_options[:action] = payment_url
     content_tag(:form, form_options ) do
-      dineromail_inputs(item_name,amount,options) +
-      content_tag(:input,nil, :type => 'image', :src => button_image_url, :border => '0', :name=> 'submit', :alt=>'Pagar con Dineromail' )
+      ''.tap do |html|
+        html << dineromail_inputs(item_name,amount,options)
+        html << content_tag(:input,nil, :type => 'image', :src => button_image_url, :border => '0', :name=> 'submit', :alt=>'Pagar con Dineromail' )
+      end
     end
   end
   
@@ -25,19 +27,19 @@ module DineromailHelper
     transaction_id = options[:transaction_id]
     item_number = options[:item_number]
     
-    html = content_tag(:input,nil, :type => 'hidden', :name => 'NombreItem', :value =>item_name)
-    html += content_tag(:input,nil, :type => 'hidden', :name => 'TipoMoneda', :value =>currency)
-    html += content_tag(:input,nil, :type => 'hidden', :name => 'PrecioItem', :value =>amount)
-    html += content_tag(:input,nil, :type => 'hidden', :name => 'E_Comercio', :value =>account_number)
-    html += content_tag(:input,nil, :type => 'hidden', :name => 'image_url', :value =>logo_url)
-    html += content_tag(:input,nil, :type => 'hidden', :name => 'DireccionExito', :value => return_url)
-    html += content_tag(:input,nil, :type => 'hidden', :name => 'DireccionFracaso', :value => error_url)
-    html += content_tag(:input,nil, :type => 'hidden', :name => 'Mensaje', :value => message)
-    html += content_tag(:input,nil, :type => 'hidden', :name => 'MediosPago', :value => pay_methods)
-    html += content_tag(:input,nil, :type => 'hidden', :name => 'NroItem', :value => item_number) if item_number
-    html += content_tag(:input,nil, :type => 'hidden', :name => 'TRX_ID', :value => transaction_id) if transaction_id
-    
-    html
+    ''.tap do |html|
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'NombreItem', :value =>item_name)
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'TipoMoneda', :value =>currency)
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'PrecioItem', :value =>amount)
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'E_Comercio', :value =>account_number)
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'image_url', :value =>logo_url)
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'DireccionExito', :value => return_url)
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'DireccionFracaso', :value => error_url)
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'Mensaje', :value => message)
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'MediosPago', :value => pay_methods)
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'NroItem', :value => item_number) if item_number
+      html << content_tag(:input,nil, :type => 'hidden', :name => 'TRX_ID', :value => transaction_id) if transaction_id
+    end
   end  
   
   

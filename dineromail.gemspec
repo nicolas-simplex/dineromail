@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Dineromail library for Rails}
   s.description = %q{Integration with dineromail plataform for rails projects}
   
-  s.add_dependency "xml-simple"
+  s.add_dependency "happymapper"
   s.add_dependency "httparty"
   s.add_dependency "rails", ["~> 3.0"]
   s.add_development_dependency "bundler"
