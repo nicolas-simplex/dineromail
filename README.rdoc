@@ -1,0 +1,49 @@
+= Dineromail / Rails
+
+Dineromail is an unofficial library for interacting with the Dineromail payment api.
+
+== Getting Started
+
+Dineromail is released as a Ruby Gem. The gem is to be installed within a Ruby
+on Rails 3 application. To install, simply add the following to your Gemfile:
+
+  # Gemfile
+  gem 'dineromail'
+
+== General Configuration
+
+You need to create a config file (config/initializers/dineromail.rb) with:
+
+    Dineromail.configure do |config|
+      config.pay_methods = '' #All the available methods
+      config.account_number = 'your_account_number'
+      config.password = 'your_password'
+      config.logo_url = 'http://my-web.com/images/logo.png'
+      config.return_url = 'http://my-web.com/success'
+      config.error_url = 'http://my-web.com/error'
+      config.currency = Dineromail::Configuration::PESO
+      config.ipn_webservice_url = 'https://argentina.dineromail.com/Vender/Consulta_IPN.asp'
+      config.payment_url = 'https://argentina.dineromail.com/Shop/Shop_Ingreso.asp'
+      config.button_image_url = 'https://argentina.dineromail.com/imagenes/vender/boton/comprar-gris.gif'
+    end
+
+== Example rails controller
+
+    class DineromailController < ApplicationController
+      def ipn
+        notifications = Dineromail::Notification.parse(params[:Notificacion])
+        notifications.each do |notify|
+          if notify.valid_report? && notify.completed?
+            order = Order.find(notify.transaction_id)
+            #Allways check the amount
+            order.success = order.amount == notify.amount ? 'success' : 'failure'
+            order.save
+          end
+        end
+        render :nothing => true
+      end
+    end
+
+== Example dineromail forward page
+
+    <%= dineromail_button('Item name',price,:transaction_id => @transaction_id) %>
