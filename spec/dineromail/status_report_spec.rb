@@ -26,7 +26,7 @@ describe Dineromail::StatusReport do
     buyer.document_type.should == 'DNI'
     buyer.document_number.should == '222222222'
     item.description.should == 'Libro'
-    item.currency.should == 1
+    item.currency.should == Dineromail::Configuration::PESO
     item.count.should == 2
     item.unit_price.should == 6.9
   end
