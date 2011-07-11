@@ -47,3 +47,10 @@ You need to create a config file (config/initializers/dineromail.rb) with:
 == Example dineromail forward page
 
     <%= dineromail_button('Item name',price,:transaction_id => @transaction_id) %>
+
+== Contributing to Dineromail
+
+* Fork the project.
+* Make your feature addition or bug fix
+* Send me a pull request.
+
