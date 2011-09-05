@@ -16,6 +16,9 @@ describe Dineromail::StatusReport do
     operation.transaction_id.should == 1889
     operation.date.should == DateTime.ordinal(2011,28,12,2,1)
     operation.status.should == Dineromail::Operation::PENDING_STATUS
+    operation.pending?.should be_true
+    operation.completed?.should be_false
+    operation.cancelled?.should be_false
     operation.amount.should == 60.2
     operation.net_amount.should == 50.3
     operation.pay_method.should == 'TARJETA DE CREDITO'

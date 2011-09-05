@@ -23,7 +23,7 @@ module Dineromail
     end
     
     def completed?
-      status == ACCREDITED_STATUS
+      status == COMPLETED_STATUS
     end
     
     def cancelled?
