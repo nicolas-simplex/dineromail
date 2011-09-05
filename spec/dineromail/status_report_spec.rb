@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'rspec/rails'
+require 'rspec/rails/views/matchers'
 
 describe Dineromail::StatusReport do
   it 'should load the status report from xml' do
@@ -30,4 +32,29 @@ describe Dineromail::StatusReport do
     item.count.should == 2
     item.unit_price.should == 6.9
   end
+  
+  it 'should use the configuration to get the parameters for the request if no options are given' do
+    transaction_id = 42
+    Dineromail.configure do |c|
+      c.account_number = '10000'
+      c.password = 'password-123'
+    end
+    xml_request = Dineromail::StatusReport.xml_request_for(transaction_id)
+    xml_request.should have_tag('nrocta', :text => '10000')
+    xml_request.should have_tag('clave', :text => 'password-123')
+    xml_request.should have_tag('id', :text => '42')
+  end
+  
+  it 'should use the option parameters for the request if options are given' do
+    transaction_id = 42
+    Dineromail.configure do |c|
+      c.account_number = '10000'
+      c.password = 'password-123'
+    end
+    xml_request = Dineromail::StatusReport.xml_request_for(transaction_id,{:account_number => '2000',:password => 'password-456'})
+    xml_request.should have_tag('nrocta', :text => '2000')
+    xml_request.should have_tag('clave', :text => 'password-456')
+    xml_request.should have_tag('id', :text => '42')
+  end
+  
 end

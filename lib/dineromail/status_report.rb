@@ -21,16 +21,25 @@ module Dineromail
     INVALID_PASSWORD_OR_ACCOUNT_NUMBER_REQUEST_STATUS = 7
     TRANSACTION_NOT_FOUND_REQUEST_STATUS = 8
     
+    
     def valid_report?
       report_status == VALID_REPORT_STATUS
     end
     
     
-    def self.get_report_for(transaction_id)
-      account_number = Dineromail.configuration.account_number
-      password = Dineromail.configuration.password
-      ipn_url = Dineromail.configuration.ipn_webservice_url
-      request_data = "<REPORTE>
+    def self.get_report_for(transaction_id,options = {})
+      options = options.symbolize_keys
+      ipn_url = options[:ipn_webservice_url] || Dineromail.configuration.ipn_webservice_url
+      request_data = xml_request_for(transaction_id,options)
+      response = HTTParty.get ipn_url , :query => {:data => request_data}
+      self.parse response.body
+    end
+    
+    def self.xml_request_for(transaction_id,options = {})
+      options = options.symbolize_keys
+      account_number = options[:account_number] || Dineromail.configuration.account_number
+      password = options[:password] || Dineromail.configuration.password
+      "<REPORTE>
             <NROCTA>#{account_number}</NROCTA>
             <DETALLE>
             <CONSULTA>
@@ -42,8 +51,6 @@ module Dineromail
             </CONSULTA>
             </DETALLE>
           </REPORTE>"
-      response = HTTParty.get ipn_url , :query => {:data => request_data}
-      self.parse response.body
     end
     
   end

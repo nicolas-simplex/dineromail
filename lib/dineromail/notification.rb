@@ -7,9 +7,13 @@ module Dineromail
     element :transaction_id, Integer, :tag => 'ID'
     element :type, String, :tag => 'TIPO'
     
+    def initialize(options = {})
+      @options = options.symbolize_keys
+    end
+    
     def status_report
       unless @status_report
-        @status_report = StatusReport.get_report_for(transaction_id)
+        @status_report = StatusReport.get_report_for(transaction_id,@options)
       end
       @status_report
     end
