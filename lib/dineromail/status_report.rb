@@ -8,8 +8,8 @@ module Dineromail
     
     include HappyMapper
     
-    tag 'REPORTE'
-    element :report_status, Integer, :tag => 'ESTADOREPORTE'
+    tag 'reporte'
+    element :report_status, Integer, :tag => 'estadoreporte'
     has_many :operations, Operation
     
     VALID_REPORT_STATUS = 1
@@ -33,6 +33,12 @@ module Dineromail
       request_data = xml_request_for(transaction_id,options)
       response = HTTParty.get ipn_url , :query => {:data => request_data}
       self.parse response.body
+    end
+    
+    def self.parse(xml)
+      #Convert tags to lowercase
+      xml = xml.gsub(/<(.*?)[> ]/){|tag| tag.downcase}
+      super(xml)
     end
     
     def self.xml_request_for(transaction_id,options = {})

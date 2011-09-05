@@ -3,9 +3,9 @@ module Dineromail
   class Notification
     include HappyMapper
     
-    tag 'OPERACION'
-    element :transaction_id, Integer, :tag => 'ID'
-    element :type, String, :tag => 'TIPO'
+    tag 'operacion'
+    element :transaction_id, Integer, :tag => 'id'
+    element :type, String, :tag => 'tipo'
     
     def initialize(options = {})
       @options = options.symbolize_keys
@@ -26,6 +26,12 @@ module Dineromail
       unless status_report.operations.empty?
         status_report.operations.first.send(symbol, *args)
       end
+    end
+    
+    def self.parse(xml)
+      #Convert tags to lowercase
+      xml = xml.gsub(/<(.*?)[> ]/){|tag| tag.downcase}
+      super(xml)
     end
     
   end

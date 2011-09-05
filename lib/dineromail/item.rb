@@ -2,11 +2,11 @@ module Dineromail
   class Item
     include HappyMapper
     
-    tag 'ITEM'
-    element :description, String, :tag => 'DESCRIPCION'
-    element :currency, Integer, :tag => 'MONEDA'
-    element :unit_price, Float, :tag => 'PRECIOUNITARIO'
-    element :count, Integer, :tag => 'CANTIDAD'
+    tag 'item'
+    element :description, String, :tag => 'descripcion'
+    element :currency, Integer, :tag => 'moneda'
+    element :unit_price, Float, :tag => 'preciounitario'
+    element :count, Integer, :tag => 'cantidad'
     
     DOLLAR = 2
     PESO = 1    
