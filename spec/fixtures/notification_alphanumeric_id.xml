@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NOTIFICACION>
+    <TIPONOTIFICACION>1</TIPONOTIFICACION>
+    <OPERACIONES>
+        <OPERACION>
+            <TIPO>1</TIPO>
+            <ID>ABC123</ID>
+        </OPERACION>
+    </OPERACIONES>
+</NOTIFICACION>

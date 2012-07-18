@@ -36,6 +36,13 @@ describe Dineromail::StatusReport do
     item.unit_price.should == 6.9
   end
   
+  it 'should allow alphanumeric transaction ids' do
+    xml = File.read( 'spec/fixtures/status_report_alphanumeric_id.xml')
+    status_report = Dineromail::StatusReport.parse(xml)
+    operation = status_report.operations.first
+    operation.transaction_id.should == 'ABC123'
+  end
+  
   it 'should use the configuration to get the parameters for the request if no options are given' do
     transaction_id = 42
     Dineromail.configure do |c|

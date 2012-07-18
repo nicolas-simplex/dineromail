@@ -9,6 +9,12 @@ describe Dineromail::Notification do
     notifications.last.transaction_id.should == 5547
   end
   
+  it 'should allow alphanumeric transaction ids' do
+    notification_xml = File.read( 'spec/fixtures/notification_alphanumeric_id.xml')
+    notifications = Dineromail::Notification.parse(notification_xml)
+    notifications.first.transaction_id.should == 'ABC123'
+  end
+  
   it 'should get automaticaly the status data associated with the notification' do
     HTTParty.stub!(:get).and_return {
       stub :body => File.read( 'spec/fixtures/status_report.xml')

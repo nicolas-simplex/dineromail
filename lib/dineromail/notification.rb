@@ -17,6 +17,16 @@ module Dineromail
       end
       @status_report
     end
+    
+    def transaction_id
+      #If the transaction_id being used is the string representation 
+      #of an integer return an integer for backward compatibility
+      if @transaction_id =~ /\A\d+\Z/
+        @transaction_id.to_i
+      else
+        @transaction_id
+      end
+    end
 
     def valid_report?
       status_report.valid_report?

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<REPORTE>
+    <ESTADOREPORTE>1</ESTADOREPORTE>
+    <DETALLE>
+        <OPERACIONES>
+            <OPERACION>
+                <ID>ABC123</ID>
+                <FECHA>28/01/2011 12:02:01 PM</FECHA>
+                <ESTADO>1</ESTADO>
+                <NUMTRANSACCION>67777</NUMTRANSACCION>
+                <COMPRADOR>
+                    <EMAIL>comprador@email.com</EMAIL>
+                    <DIRECCION>San Martin 10</DIRECCION>
+                    <COMENTARIO>comentario</COMENTARIO>
+                    <NOMBRE>Juan</NOMBRE>
+                    <TELEFONO>4444444</TELEFONO>
+                    <TIPODOC>DNI</TIPODOC>
+                    <NUMERODOC>222222222</NUMERODOC>
+                </COMPRADOR>
+                <MONTO>60.2</MONTO>
+                <MONTONETO>50.3</MONTONETO>
+                <METODOPAGO>TARJETA DE CREDITO</METODOPAGO>
+                <MEDIOPAGO>VISA</MEDIOPAGO>
+                <CUOTAS>1</CUOTAS>
+                <ITEMS>
+                    <ITEM>
+                        <DESCRIPCION>Libro</DESCRIPCION>
+                        <MONEDA>1</MONEDA>
+                        <PRECIOUNITARIO>6.90</PRECIOUNITARIO>
+                        <CANTIDAD>2</CANTIDAD>
+                    </ITEM>
+                </ITEMS>
+                <VENDEDOR>
+                    <TIPODOC></TIPODOC>
+                    <NUMERODOC></NUMERODOC>
+                </VENDEDOR>
+            </OPERACION>
+        </OPERACIONES>
+    </DETALLE>
+</REPORTE>

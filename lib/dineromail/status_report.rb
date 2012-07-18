@@ -4,8 +4,6 @@ require 'dineromail/buyer'
 require 'dineromail/operation'
 module Dineromail
   class StatusReport
-    attr_accessor :transaction_id
-    
     include HappyMapper
     
     tag 'reporte'
